@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Propriedade Float</title>
+</head>
+<body>
+<div id="cabecalho">
+	<img width="100px" height="100px" src="images/icomp.png">
+	<h1>Instituto de Computação</h1>
+</div>
+<div class=menu>
+<div class="Conteudo" id="ct1"> <a href="">Home</a></div>
+<div class="Conteudo" id="ct2"><a href="">Institucional</a></div>
+<div class="Conteudo" id="ct3"><a href="">Graduação</a></div>
+<div class="Conteudo"id="ct4"><a href="">Pós-Graduação</a></div>
+<div class="Conteudo" id="ct5"><a href="">Extensão</a></div>
+</div>
+<div id="ct6">
+<p>Instituto de Computação (IComp), antigo Departamento de Ciência da Computação (DCC),  é um instituto acadêmico que agrega os professores da área de computação. Como todo instituto acadêmico o IComp atua no ensino, pesquisa e extensão, além de desempenhar atividades administrativas.</p>
+
+<p>No ensino de graduação, o DCC atua principalmente nos cursos de Ciência da Computação, Sistemas de Informação e Engenharia da Computação. Também oferece disciplinas básicas de computação para 27 cursos de graduação em 7 unidades acadêmicas distintas.</p>
+
+<p>No ensino de pós-graduação, o IComp atua nos cursos de Mestrado e Doutorado em Informática do Programa de Pós-Graduação em Informática (PPGI). O IComp também tem atendido demandas de outros programas, por exemplo, com professores atuando no Curso de Mestrado em Engenharia Elétrica, contribuindo para melhorar o conceito de outros programas de pós-graduação da UFAM.</p></div>
+
+<div id="ct7">Copyright 2016 Instituto de Computação da Universidade Federal do Amazonas</br></br>
+Endereço: Av. General Rodrigo Otávio, 6200, Coroado 1, Cep: 69077-000
+</div>
+
+</body>
+
+<style type="text/css">
+	.Conteudo{
+		background-color: #66ffff;
+		margin: 20px;
+		height: 30px;
+		width: 150px;
+		padding: 10px;
+		font-size: 20px
+	}
+
+	#ct6{
+		float: left;
+		width: 800px;
+		font-size: 20px;
+	}
+
+	#ct7{
+		font-size: 20px;
+		float: right;
+		background-color: #66ffff;
+		margin: 5px;
+		height: 320px;
+		width: 180px;
+		padding: 20px;
+
+	}
+	#cabecalho{
+		background-color: #ccccb3;
+		text-align: center;
+	}
+	.menu {
+		float: left;
+	}
+	
+	
+
+@media only screen and (max-width: 600px) {
+    /* For mobile phones: */
+    .Conteudo {
+        width: 500px;
+    }
+
+    #ct7{
+    	width: 500px;
+    	height: 140px;
+    	float:left;
+    }
+
+    #ct6{
+    	width: 500px;
+    }
+    #cabecalho{
+    	width: 600px;
+    }
+
+}
+</style>
+
+
+</html>

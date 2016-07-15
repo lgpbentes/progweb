@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Um gráfico de barras</title>
+</head>
+<body>
+	<h1>Um gráfico de barras usando imagens</h1>
+	<form name="myform">
+	<table>
+		<tr>
+			<td>Informe a altura das barras: </td>
+			<td><input type="text" name="barra1"></input></td>
+			<td><input type="text" name="barra2"></input></td>
+			<td><input type="text" name="barra3"></input></td>
+			<td><input type="text" name="barra4"></input></td>
+			<td><input type="text" name="barra5"></input></td>
+		</tr>
+	</table>
+	<table>
+		<tr>
+			<td>Informe a largura das barras(em pixels):</td>
+			<td><input type="text" name="largura"></input></td>
+		</tr>
+		<tr>
+			<td><button id="mudar" type="button">Desenhe o gráfico</button></td>
+		</tr>
+	</table>
+	</form>
+<img id="imagem1" src="vermelho.jpg" width="0" height="0">
+<img id="imagem2" src="vermelho.jpg" width="0" height="0">
+<img id="imagem3" src="vermelho.jpg" width="0" height="0">
+<img id="imagem4" src="vermelho.jpg" width="0" height="0">
+<img id="imagem5" src="vermelho.jpg" width="0" height="0">
+
+</body>
+
+<script type="text/javascript">
+	var ibagem = new Image();
+	ibagem.src = "vermelho.jpg";
+
+	var botao = document.getElementById("mudar");
+
+	botao.onclick = function () {
+
+		var b1 = document.myform.barra1.value;
+		var b2 = document.myform.barra2.value;
+		var b3 = document.myform.barra3.value;
+		var b4 = document.myform.barra4.value;
+		var b5 = document.myform.barra5.value;
+		var l = document.myform.largura.value;
+
+		if (b1!="" && b2!="" && b3!="" && b4 !="" && b5 != "") {
+			document.images[0].src = "vermelho.jpg";
+			document.images[0].height = b1;
+
+			document.images[1].src = "vermelho.jpg";
+			document.images[1].height = b2;
+
+			document.images[2].src = "vermelho.jpg";
+			document.images[2].height = b3;
+
+			document.images[3].src = "vermelho.jpg";
+			document.images[3].height = b4;
+
+			document.images[4].src = "vermelho.jpg";
+			document.images[4].height = b5;
+
+			document.images[0].width = l;
+			document.images[1].width = l;
+			document.images[2].width = l;
+			document.images[3].width = l;
+			document.images[4].width = l;
+		}
+	}
+</script>
+</html>
