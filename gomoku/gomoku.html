@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Jogo Gomoku</title>
+  <link rel="stylesheet" type="text/css" href="gomoku.css">
+
+</head>
+<body>
+<div id="container">
+
+  <div id="cabecalho">
+    <h1>Jogo Gomoku</h1>
+    <button id="inicio" onclick="jogo()" >Iniciar</button>
+  </div>
+  <div id="desc">
+  <p>O Gomoku, também conhecido como Gobang, é um jogo de tabuleiro estratégico tradicionalmente jogado com peças de Go (peças negras e brancas) em um tabuleiro de Go ligeiramente modificado (15x15 interseções). No entanto, ao contrario deste, uma vez que as peças são colocadas não podem ser movidas ou retiradas do tabuleiro. No inicio do jogo, as negras começam, e os jogadores alternam na colocação de uma pedra da sua cor em uma interseção vazia. O vencedor é o primeiro jogador a obter uma linha ininterrupta de cinco pedras na horizontal, vertical ou diagonal.</p>
+  </div>
+  <div id="tabela">
+  <script type="text/javascript">
+    document.writeln("<table class='tabuleiro'>");
+    for (row=0; row < 15; row++) { 
+      document.writeln("<tr>");
+      for (col=0; col < 15; col++) {
+        document.write("<td><a href=\"javascript:jogada("+row+","+col+")\"><img src=\"rosa.jpg\" width=29 /></a></td>");
+      }
+    document.writeln("</tr>");
+    }
+    document.writeln("</table>");
+  </script>
+  </div>
+  <div id="vez">
+    <table border="1">
+      <td colspan="2" style="padding: 10px">Jogador da vez</td>
+      <tr>
+        <td><img class="jogadores" id="j1" src="X.jpg" width="30" height="30"></td>
+        <td><img class="jogadores" id="j2" src="O.jpg" width="30" height="30"></td>
+      </tr>
+    </table>
+  </div>
+
+  </div>
+</body>
+<script type="text/javascript" src="gomoku.js" ></script>
+</html>

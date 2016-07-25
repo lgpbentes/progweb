@@ -1,0 +1,42 @@
+#tabuleiro{
+	float:left;
+}
+
+td{
+	padding: 1px;
+}
+
+h1, #inicio{
+	float: left;
+}
+
+table{
+	text-align: center;
+}
+
+#tabela{
+	
+	float: left;
+}
+
+#desc{
+	float: left;
+	width: 100%;
+}
+
+#container{
+	width: 1000px;
+	
+	margin: 0 auto;
+}
+.jogadores{
+	padding: 5px;
+}
+
+#j2{
+	opacity: 0.3;
+}
+
+#vez{
+	float: left;
+}
