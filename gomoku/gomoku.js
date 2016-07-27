@@ -1,6 +1,10 @@
 var rodada=1;
 var size=15;
 var matriz
+var vencedor = false;
+
+tabuleiroNum = [];
+matrizJogo(15);
 
 function jogo(){ 
   /*
@@ -11,18 +15,13 @@ function jogo(){
   */
   tabuleiroNum = [];
   matrizJogo(15);
- 
-  /*//imprimindo a matriz loca
-  var tmp, rs="";
-  for (var i = 0; i < 15; i++) {
-    tmp="";
-    for (var j = 0; j < 15; j++) {
-      tmp+= tabuleiroNum[i][j]+" ";
+  vencedor = false;
+
+  for (row=0; row < 15; row++) { 
+    for (col=0; col < 15; col++) {
+      document.images[size*row+col].src="rosa.jpg";
     }
-    rs+=tmp+"\n";
   }
-  //rsrsrsrsrsr
-  window.alert(rs);*/
 }
 
 function jogadorVez() {
@@ -37,45 +36,133 @@ function jogadorVez() {
 }
 
 function jogada(linha, coluna){
-  if (rodada%2 == 0){
-    /*Nao tenho ideia do que isso faz*/
-    document.images[size*linha+coluna].src = "O.jpg";
-    tabuleiroNum[linha][coluna] = 2;
-  }else{
-    tabuleiroNum[linha][coluna] = 1;
-    document.images[size*linha+coluna].src = "X.jpg";
-  }
-  
-  //imprimindo a matriz loca
-  var tmp, rs="";
-  for (var i = 0; i < 15; i++) {
-    tmp="";
-    for (var j = 0; j < 15; j++) {
-      tmp+= tabuleiroNum[i][j]+" ";
+  //se nao tem um vencedor
+  if (!vencedor) {
+    if (rodada == 1){
+      jogo();
     }
-    rs+=tmp+"\n";
-  }
-  //rsrsrsrsrsr
-  window.alert(rs);
 
-  temGanhador(document.images[size*linha+coluna].src);
-  jogadorVez(rodada);
-  rodada++;
+    if (rodada%2 == 0){
+      document.images[size*linha+coluna].src = "O.jpg";
+      tabuleiroNum[linha][coluna] = 2;
+      temGanhador(linha, coluna, 2);
+    }else{
+      tabuleiroNum[linha][coluna] = 1;
+      document.images[size*linha+coluna].src = "X.jpg";
+      temGanhador(linha, coluna, 1);
+      if(vencedor){
+        tabuleiroNum = [];
+        //exibir tela de vencedor aqui
+      }
+    }
+    jogadorVez(rodada);
+    rodada++;
+  }
+
+  
+  
 }
 
-function temGanhador(caminhoImg){
-  var contzinho=0;
-
-  for(row=0;row<15;row++){
+// essa funcao recebe a posicao da ultima jogada como parametros
+function temGanhador(posX, posY, idJogador){
+    /*for(row=0;row<15;row++){
     for(col=0;col<15;col++){
-      // assim que se acessa um elemento da matriz :((
+      
       if (document.images[size*row+col].src==caminhoImg){
         contzinho++;
       }
     }
+  }*/
+
+  //verifica na horizontal
+  var iguais = 0;
+  for(y = 0; y < 15; y++){
+    
+    if(tabuleiroNum[posX][y] == idJogador){
+      iguais = iguais+1;
+    } else{
+      iguais=0;
+    }
+
+    if(iguais==5){
+      vencedor = true;
+      window.alert("Temos um vencedor!!!")
+      break;
+    }
   }
 
-  console.log(contzinho);
+  //verifica na vertical
+  iguais = 0;
+  for(x = 0; x < 15; x++){
+    if(tabuleiroNum[x][posY] == idJogador){
+      iguais = iguais+1;
+    } else{
+      iguais=0;
+    }
+
+    if(iguais==5){
+      vencedor = true;
+      window.alert("Temos um vencedor!!!")
+      break;
+    }
+  }
+
+  var dX, dY;
+  dX = posX;
+  dY = posY;
+  //verifica na diagonal (left-to-right)  
+  if (dX > dY){
+    dX = dX - dY;
+    dY = 0;
+  }else{
+    dY = dY - dX;
+    dX = 0;
+  }
+
+  iguais = 0;
+  while(dX < 15 && dY < 15){
+    if (tabuleiroNum[dX][dY] == idJogador){
+      iguais++;
+    }
+
+    if(iguais==5){
+      vencedor = true;
+      window.alert("Temos um vencedor!!!")
+      break;
+    }
+    //console.log(posX+", "+posY);
+    dX++;
+    dY++;
+  }
+
+  // vertical right-to-left
+  dX = posX;
+  dY = posY;
+
+  // achando a posicao inicial
+  while((dX >= 1 && dX <14) && (dY >= 1 && dY < 14)){
+    
+    dX--;
+    dY++;
+  }
+  console.log(dX + ", " + dY);
+  //contando
+  iguais = 0;
+  while(dX < 15 && dY >=0){
+    console.log(dX + ", " + dY);
+    if (tabuleiroNum[dX][dY] == idJogador){
+      iguais++;
+    }
+
+    if(iguais==5){
+      vencedor = true;
+      break;
+    }
+    dX++;
+    dY--;
+  }
+
+
 
 }
 
