@@ -10,15 +10,15 @@
 <div id="container">
 
   <div id="cabecalho">
-    <h1>Jogo Gomoku</h1>
-    <button id="inicio" onclick="jogo()" >Iniciar</button>
+    <h1>Jogo Gomoku
+    <button id="inicio" type="button" onclick="jogo()">Iniciar</button></h1>
   </div>
   <div id="desc">
-  <p>O Gomoku, também conhecido como Gobang, é um jogo de tabuleiro estratégico tradicionalmente jogado com peças de Go (peças negras e brancas) em um tabuleiro de Go ligeiramente modificado (15x15 interseções). No entanto, ao contrario deste, uma vez que as peças são colocadas não podem ser movidas ou retiradas do tabuleiro. No inicio do jogo, as negras começam, e os jogadores alternam na colocação de uma pedra da sua cor em uma interseção vazia. O vencedor é o primeiro jogador a obter uma linha ininterrupta de cinco pedras na horizontal, vertical ou diagonal.</p>
+  <p>O Gomoku, também conhecido como Gobang, é um jogo de tabuleiro estratégico tradicionalmente jogado com peças de Go (peças negras e brancas) em um tabuleiro de Go ligeiramente modificado (15x15 interseções). No entanto, ao contrario deste, uma vez que as peças são colocadas não podem ser movidas ou retiradas do tabuleiro. No inicio do jogo, as regras começam, e os jogadores alternam na colocação de uma pedra da sua cor em uma interseção vazia. O vencedor é o primeiro jogador a obter uma linha ininterrupta de cinco pedras na horizontal, vertical ou diagonal.</p>
   </div>
   <div id="tabela">
   <script type="text/javascript">
-    document.writeln("<table class='tabuleiro'>");
+    document.writeln("<table>");
     for (row=0; row < 15; row++) { 
       document.writeln("<tr>");
       for (col=0; col < 15; col++) {
@@ -30,7 +30,7 @@
   </script>
   </div>
   <div id="vez">
-    <table border="1">
+    <table>
       <td colspan="2" style="padding: 10px">Jogador da vez</td>
       <tr>
         <td><img class="jogadores" id="j1" src="X.jpg" width="30" height="30"></td>
@@ -40,6 +40,20 @@
   </div>
 
   </div>
+
+  <!-- The Modal -->
+<div id="myModal" class="modal">
+
+  <!-- Modal content -->
+  <div class="modal-content">
+    <span class="close">×</span>
+    <img id="winner" style="float: left"; src="" width="29" height="29">
+    <p style="float: left; margin: 10px;">venceu!</p>
+  </div>
+
+</div>
+  
 </body>
 <script type="text/javascript" src="gomoku.js" ></script>
+
 </html>

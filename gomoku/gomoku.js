@@ -1,11 +1,30 @@
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+var modal = document.getElementById('myModal');
+var winner = document.getElementById('winner');
 var rodada=1;
 var size=15;
 var matriz
 var vencedor = false;
 
-tabuleiroNum = [];
+var tabuleiroNum = [];
 matrizJogo(15);
 
+// Para fechar o modal no 'X'
+span.onclick = function() {
+    modal.style.display = "none";
+}
+
+// caso seja clicado fora do modal, ele é fechado
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
+
+// funcao que inicia as variaveis do jogo
 function jogo(){ 
   /*
   essa eh uma matriz que representa o tabuleiro->
@@ -13,6 +32,11 @@ function jogo(){
   jogador 2: representado por 2;
 
   */
+  rodada = 1;
+
+  document.getElementById("j1").style.opacity = 1;
+  document.getElementById("j2").style.opacity = 0.3;
+
   tabuleiroNum = [];
   matrizJogo(15);
   vencedor = false;
@@ -24,6 +48,7 @@ function jogo(){
   }
 }
 
+// funcao que indica em um tabela quem é o jogador da vez
 function jogadorVez() {
   if(rodada%2 == 0){
     document.getElementById("j1").style.opacity = 1;
@@ -35,44 +60,44 @@ function jogadorVez() {
   }
 }
 
+// funcao que recebe o evento de clique em um ponto da tabela
 function jogada(linha, coluna){
-  //se nao tem um vencedor
-  if (!vencedor) {
-    if (rodada == 1){
+  if (rodada == 1){
       jogo();
-    }
-
+  }
+  jogador = 0;
+  //se nao tem um vencedor
+  if (!vencedor && tabuleiroNum[linha][coluna] == 0) {
     if (rodada%2 == 0){
-      document.images[size*linha+coluna].src = "O.jpg";
       tabuleiroNum[linha][coluna] = 2;
+      document.images[size*linha+coluna].src = "O.jpg";
+      jogador = 2;
       temGanhador(linha, coluna, 2);
     }else{
       tabuleiroNum[linha][coluna] = 1;
       document.images[size*linha+coluna].src = "X.jpg";
+      jogador = 1;
       temGanhador(linha, coluna, 1);
-      if(vencedor){
+    }
+
+    if(vencedor){
         tabuleiroNum = [];
-        //exibir tela de vencedor aqui
-      }
+        if (jogador == 1){
+          winner.src = "X.jpg";
+        } else{
+          winner.src = "O.jpg";
+        }
     }
     jogadorVez(rodada);
     rodada++;
   }
-
-  
-  
 }
 
-// essa funcao recebe a posicao da ultima jogada como parametros
+// essa funcao verifica se a ultima jogada gerou um vencedor
+// verifica primeiro na seguinte ordem: linha da jogada, coluna da jogada,
+// diagonal (esquerda-direita e direita-esquerda)
+// recebe a posicao da ultima jogada como parametros
 function temGanhador(posX, posY, idJogador){
-    /*for(row=0;row<15;row++){
-    for(col=0;col<15;col++){
-      
-      if (document.images[size*row+col].src==caminhoImg){
-        contzinho++;
-      }
-    }
-  }*/
 
   //verifica na horizontal
   var iguais = 0;
@@ -86,7 +111,7 @@ function temGanhador(posX, posY, idJogador){
 
     if(iguais==5){
       vencedor = true;
-      window.alert("Temos um vencedor!!!")
+      modal.style.display = "block";
       break;
     }
   }
@@ -102,7 +127,7 @@ function temGanhador(posX, posY, idJogador){
 
     if(iguais==5){
       vencedor = true;
-      window.alert("Temos um vencedor!!!")
+      modal.style.display = "block";
       break;
     }
   }
@@ -123,11 +148,13 @@ function temGanhador(posX, posY, idJogador){
   while(dX < 15 && dY < 15){
     if (tabuleiroNum[dX][dY] == idJogador){
       iguais++;
+    } else{
+      iguais = 0;
     }
 
     if(iguais==5){
       vencedor = true;
-      window.alert("Temos um vencedor!!!")
+      modal.style.display = "block";
       break;
     }
     //console.log(posX+", "+posY);
@@ -145,28 +172,28 @@ function temGanhador(posX, posY, idJogador){
     dX--;
     dY++;
   }
-  console.log(dX + ", " + dY);
+
   //contando
   iguais = 0;
   while(dX < 15 && dY >=0){
-    console.log(dX + ", " + dY);
     if (tabuleiroNum[dX][dY] == idJogador){
       iguais++;
+    }else{
+      iguais=0;
     }
 
     if(iguais==5){
       vencedor = true;
+      modal.style.display = "block";
+
       break;
     }
     dX++;
     dY--;
   }
-
-
-
 }
 
-var tabuleiroNum = [];
+// funcao que cria e preenche a matriz tabuleiroNum (15x15) com zeros
 function matrizJogo(rows) {
   for (var i=0;i<rows;i++) {
      tabuleiroNum[i] = [[]];
