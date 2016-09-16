@@ -1,6 +1,7 @@
 <?php
 namespace frontend\models;
 
+use common\models\Curso;
 use yii\base\Model;
 use common\models\User;
 
@@ -12,6 +13,7 @@ class SignupForm extends Model
     public $username;
     public $email;
     public $password;
+    public $id_curso;
 
 
     /**
@@ -33,6 +35,9 @@ class SignupForm extends Model
 
             ['password', 'required'],
             ['password', 'string', 'min' => 6],
+
+            ['id_curso', 'integer'],
+            ['id_curso', 'required'],
         ];
     }
 
@@ -48,12 +53,13 @@ class SignupForm extends Model
         }
         
         $user = new User();
+
         $user->username = $this->username;
         $user->email = $this->email;
         $user->id_curso = $this->id_curso;
         $user->setPassword($this->password);
         $user->generateAuthKey();
-        
+
         return $user->save() ? $user : null;
     }
 }
