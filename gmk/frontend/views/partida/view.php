@@ -9,6 +9,13 @@ use yii\widgets\Pjax;
 /* @var $model common\models\Partida */
 
 $this->title = $model->idUser1->username . " X ";
+
+if (!$model->idUser2) {
+    if (Yii::$app->user->getId() != $model->idUser1->getId()) {
+        $model->id_user_2 = Yii::$app->user->getId();
+        $model->save();
+    }
+}
 $this->title .= $model->idUser2?$model->idUser2->username:"...";
 $this->params['breadcrumbs'][] = ['label' => 'Partidas', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
@@ -37,6 +44,25 @@ if (!$vencedor) {
         <h1><?= Html::encode($this->title) ?></h1>
 
         <!-- ADICIONAR: DetailView contendo os participantes do jogo -->
+        <?= DetailView::widget([
+            'model' => $model,
+            'attributes' => [
+                //'id_user_1',
+                [
+                    'attribute' => 'Jogador 1',
+                    'value' => $model->idUser1->username,
+                ],
+
+                [
+                    'attribute' => 'Jogador 2',
+                    'value' => ($model->idUser2 == null)?"Aguardando...":$model->idUser2->username,
+                ],
+                [
+                    'attribute' => 'Vencedor',
+                    'value' => ($model->vencedor == null )? "Vencedor não definido" : $model->vencedor->username,
+                ],
+            ],
+        ]) ?>
 
         <!-- Link usado pelo Pjax, para carregar o tabuleiro a cada segundo -->
         <div class="container">

@@ -63,15 +63,16 @@ class PartidaController extends Controller
      */
     public function actionCreate()
     {
-        $model = new Partida();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
-        }
+        //$model = Partida::find()->where(['id_user_1'=>Yii::$app->user->id])->andWhere('vencedor IS NULL')->one();
+
+
+            $model = new Partida();
+            $model->id_user_1 = Yii::$app->user->id;
+            $model->save();
+
+
+        return $this->redirect(['partida/view', 'id' => $model->id]);
     }
 
     /**

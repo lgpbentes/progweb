@@ -1,6 +1,8 @@
 <?php
 use yii\helpers\Html;
+use common\models\Partida;
 /* @var $this yii\web\View */
+/* @var $partida common\models\Partida */
 
 $this->title = 'Gomoku Game';
 ?>
@@ -13,8 +15,19 @@ $this->title = 'Gomoku Game';
 
         <p class="lead">Jogo clássico para dois jogadores, onde um após o outro marca cruzes e quadrados num quadro com
             treze casas horizontais e treze verticais</p>
+        <?php if (!Yii::$app->user->isGuest) {?>
+            <?= Html::a('Iniciar Nova Partida', ['partida/create'], ['class' => 'btn btn-primary']) ?>
+            <p class="lead">Jogadores aguardando desafiantes</p>
 
-        <p><a class="btn btn-lg btn-success" href="">Iniciar Jogo</a></p>
+        <?php
+            $partidas = Partida::find()->andWhere("id_user_2 is NULL")->all();
+            foreach ($partidas as $partida){
+                echo Html::a($partida->idUser1->username, ['partida/view', 'id'=>$partida->id]);
+
+            }
+        }
+        ?>
+
     </div>
 
     <div class="body-content">
