@@ -126,8 +126,6 @@ class PartidaController extends Controller
             'vencedor' => $vencedor,
         ]);
 
-
-
     }
 
     public function verificaVencedor($posX, $posY, $tabuleiro, $ultimo_jogador) {
