@@ -16,7 +16,7 @@ $this->title = 'Gomoku Game';
         <p class="lead">Jogo clássico para dois jogadores, onde um após o outro marca cruzes e quadrados num quadro com
             treze casas horizontais e treze verticais</p>
         <?php if (!Yii::$app->user->isGuest) {?>
-            <?= Html::a('Iniciar Nova Partida', ['partida/create'], ['class' => 'btn btn-primary']) ?>
+            <?= Html::a('Iniciar Nova Partida', ['partida/create'], ['class' => 'btn btn-primary']) . "<br><br>" ?>
             <p class="lead">Jogadores aguardando desafiantes</p>
 
         <?php
@@ -26,7 +26,7 @@ $this->title = 'Gomoku Game';
                 ->andWhere("id_user_2 is NULL")
                 ->all();
             foreach ($partidas as $partida) {
-                echo Html::a($partida->idUser1->username,['partida/view','id'=>$partida->id],['class'=>'btn btn-lg btn-success']);
+                echo Html::a($partida->idUser1->username,['partida/view','id'=>$partida->id],['class'=>'btn btn-lg btn-success']) . "<br><br>";
             }
 
         ?>
@@ -49,6 +49,8 @@ $this->title = 'Gomoku Game';
                     }
                 }
             }
+        }else{
+            echo Html::a('Cadastre-se',['/site/signup'],['class'=>'btn btn-lg btn-success']);
         }
         ?>
 

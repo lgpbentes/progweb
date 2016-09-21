@@ -123,7 +123,7 @@ class PartidaController extends Controller
             'model' => $this->findModel($id),
             'jogadas' => $jogadas_array,
             'jogador_da_vez' => $jogador_da_vez,
-            'vencedor' => $vencedor
+            'vencedor' => $vencedor,
         ]);
 
 

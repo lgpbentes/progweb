@@ -50,13 +50,13 @@ if (!$model->vencedor) {
             'attributes' => [
                 //'id_user_1',
                 [
-                    'label' => "<img src ='img/X.jpg' width='32px' height='32px' >  Jogador 1",
+                    'label' => "<img id='jogador1' src ='img/X.png' width='32px' height='32px' >  Jogador 1",
                     'value' => $model->idUser1->username,
                     'format' => 'raw'
                 ],
 
                 [
-                    'label' => "<img src ='img/O.jpg' width='32px' height='32px' >  Jogador 1",
+                    'label' => "<img id='jogador2' src='img/O.png' width='32px' height='32px' >  Jogador 2",
                     'value' => ($model->idUser2 == null)?"Aguardando...":$model->idUser2->username,
                     'format' => 'raw'
                 ],
@@ -67,6 +67,20 @@ if (!$model->vencedor) {
                 ],
             ],
         ]) ?>
+        <?php
+            if($model->id_user_1 == $jogador_da_vez){
+                $this->registerJs(
+                    "document.getElementById('jogador1').style.opacity = 1;
+                    document.getElementById('jogador2').style.opacity = 0.3;"
+                );
+            } else{
+                $this->registerJs(
+                    "document.getElementById('jogador2').style.opacity = 1;
+                    document.getElementById('jogador1').style.opacity = 0.3;"
+                );
+            }
+
+        ?>
 
         <!-- Link usado pelo Pjax, para carregar o tabuleiro a cada segundo -->
         <?= Html::a('Recarregar',['partida/view','id'=>$model->id],['id'=>'recarregar','style'=>'display:none']) ?>
@@ -81,11 +95,11 @@ if (!$model->vencedor) {
                         echo "<td>";
                         if (isset($jogadas)){
                                 if ($jogadas[$row][$col]==$model->id_user_1){?>
-                                    <a href="" onclick=""><img src="img/X.jpg" width="32px" height="32px"></a>
+                                    <a href="" onclick=""><img src="img/X.png" width="32px" height="32px"></a>
 
                             <?php
                                 } else if ($jogadas[$row][$col]==$model->id_user_2 && $model->idUser2 != null){?>
-                                    <a href="" onclick=""><img src="img/O.jpg" width="32px" height="32px"></a>
+                                    <a href="" onclick=""><img src="img/O.png" width="32px" height="32px"></a>
                             <?php
                                 } else{
                                     if (isset($jogador_da_vez)){
@@ -93,7 +107,6 @@ if (!$model->vencedor) {
                                             $evento = "clique($row, $col, '$caminho')";
                                         }
                                     }
-
                                     ?>
 
                                     <a href="" onclick="<?=$evento?>"><img src="img/rosa.jpg" width="32px" height="32px"></a>
@@ -120,15 +133,7 @@ if (!$model->vencedor) {
                 }
                 ?>
 
-                <!-- ADICIONAR: Tabuleiro do Jogo
-                     Cada campo do tabuleiro deverá conter um link que irá direcionar
-                     o usuário para o seguinte endereço: ['partida/view','id'=>$model->id,'linha'=>$row,'coluna'=>$col].
-                     Note que o endereço acima chama a action partida/view, e informa a action
-                     sobre qual campo (linha/coluna) do tabuleiro foi clicado. Note também que esse link
-                     está dentro de Pjax::begin() e Pjax:end(), e por isso, ao ser clicado, ele
-                     irá disparar uma chamada Pjax, de forma que apenas a região do tabuleiro
-                     será recarregada.
-                -->
+
             </table>
 
         </div>
@@ -138,6 +143,7 @@ if (!$model->vencedor) {
 <?php Pjax::end(); ?>
 
 <script>
+
     function clique(linha, coluna, base){
         window.location.href= base+ '&linha='+linha+'&coluna='+coluna;
     }

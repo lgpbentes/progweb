@@ -9,7 +9,7 @@ use yii\bootstrap\ActiveForm;
 use common\models\Curso;
 use yii\helpers\ArrayHelper;
 
-$this->title = 'Signup';
+$this->title = 'Cadastrar-se';
 $this->params['breadcrumbs'][] = $this->title;
 
 //$arraycursos = array('SI', 'CC');
@@ -19,7 +19,7 @@ $arraycursos=ArrayHelper::map(Curso::find()->asArray()->all(), 'id', 'nome');
 <div class="site-signup">
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <p>Please fill out the following fields to signup:</p>
+    <p>Por favor, preencha os campos a seguir para cadastrar-se:</p>
 
     <div class="row">
         <div class="col-lg-5">
@@ -32,9 +32,9 @@ $arraycursos=ArrayHelper::map(Curso::find()->asArray()->all(), 'id', 'nome');
 
                 <?= $form->field($model, 'email') ?>
 
-                <?= $form->field($model, 'password')->passwordInput() ?>
+                <?= $form->field($model, 'password')->passwordInput()->label('Senha') ?>
 
-                <?= $form->field($model, 'id_curso')->dropDownList($arraycursos) ?>
+                <?= $form->field($model, 'id_curso')->dropDownList($arraycursos)->label('Curso') ?>
 
                 <div class="form-group">
                     <?= Html::submitButton('Cadastrar-se', ['class' => 'btn btn-primary', 'name' => 'signup-button']) ?>

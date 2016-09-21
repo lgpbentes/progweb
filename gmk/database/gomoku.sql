@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Máquina: localhost
--- Data de Criação: 14-Set-2016 às 15:54
+-- Data de Criação: 21-Set-2016 às 17:59
 -- Versão do servidor: 5.6.31-0ubuntu0.14.04.2
 -- versão do PHP: 5.5.9-1ubuntu4.19
 
@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS `comentario` (
   `sexo` char(1) DEFAULT NULL,
   `comentarios` text,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS `curso` (
   `sigla` char(4) DEFAULT NULL,
   `descricao` text,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
 
 -- --------------------------------------------------------
 
@@ -57,7 +57,7 @@ CREATE TABLE IF NOT EXISTS `curso` (
 --
 
 CREATE TABLE IF NOT EXISTS `jogada` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `id_user` int(11) DEFAULT NULL,
   `id_partida` int(11) DEFAULT NULL,
   `linha` int(11) NOT NULL,
@@ -65,7 +65,7 @@ CREATE TABLE IF NOT EXISTS `jogada` (
   `data_hora` date DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_user` (`id_user`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=195 ;
 
 -- --------------------------------------------------------
 
@@ -94,7 +94,7 @@ CREATE TABLE IF NOT EXISTS `partida` (
   KEY `fk_user1` (`id_user_1`),
   KEY `fk_user2` (`id_user_2`),
   KEY `fk_vencedor` (`vencedor`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=28 ;
 
 -- --------------------------------------------------------
 
@@ -113,31 +113,25 @@ CREATE TABLE IF NOT EXISTS `user` (
   `status` smallint(6) NOT NULL DEFAULT '10',
   `created_at` int(11) NOT NULL,
   `updated_at` int(11) NOT NULL,
-  `id_curso` int(11) NOT NULL,
+  `id_curso` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`),
   UNIQUE KEY `email` (`email`),
   UNIQUE KEY `password_reset_token` (`password_reset_token`),
   KEY `fk_user_curso1_idx` (`id_curso`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=15 ;
 
 --
 -- Constraints for dumped tables
 --
 
 --
--- Limitadores para a tabela `jogada`
---
-ALTER TABLE `jogada`
-  ADD CONSTRAINT `fk_user` FOREIGN KEY (`id_user`) REFERENCES `user` (`id`);
-
---
 -- Limitadores para a tabela `partida`
 --
 ALTER TABLE `partida`
-  ADD CONSTRAINT `fk_user1` FOREIGN KEY (`id_user_1`) REFERENCES `user` (`id`),
-  ADD CONSTRAINT `fk_user2` FOREIGN KEY (`id_user_2`) REFERENCES `user` (`id`),
-  ADD CONSTRAINT `fk_vencedor` FOREIGN KEY (`vencedor`) REFERENCES `user` (`id`);
+  ADD CONSTRAINT `fk_user1` FOREIGN KEY (`id_user_1`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_user2` FOREIGN KEY (`id_user_2`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_vencedor` FOREIGN KEY (`vencedor`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Limitadores para a tabela `user`

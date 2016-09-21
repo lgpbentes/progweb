@@ -23,21 +23,21 @@ class SignupForm extends Model
     {
         return [
             ['username', 'trim'],
-            ['username', 'required'],
-            ['username', 'unique', 'targetClass' => '\common\models\User', 'message' => 'This username has already been taken.'],
+            ['username', 'required', 'message'=>'Este campo é obrigatório'],
+            ['username', 'unique', 'targetClass' => '\common\models\User', 'message' => 'Este nome de usuário já está sendo utilizado'],
             ['username', 'string', 'min' => 2, 'max' => 255],
 
             ['email', 'trim'],
-            ['email', 'required'],
-            ['email', 'email'],
+            ['email', 'required', 'message'=> 'Insira um endereço de email válido'],
+            ['email', 'email', 'message'=>'Email inválido'],
             ['email', 'string', 'max' => 255],
-            ['email', 'unique', 'targetClass' => '\common\models\User', 'message' => 'This email address has already been taken.'],
+            ['email', 'unique', 'targetClass' => '\common\models\User', 'message' => 'Este endereço de email já está sendo usado'],
 
-            ['password', 'required'],
+            ['password', 'required', 'message'=>"Este campo é obrigatório"],
             ['password', 'string', 'min' => 6],
 
             ['id_curso', 'integer'],
-            ['id_curso', 'required'],
+            ['id_curso', 'required', 'message'=> 'Este campo é obrigatório'],
         ];
     }
 
