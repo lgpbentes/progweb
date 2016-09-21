@@ -10,31 +10,34 @@ use yii\widgets\Pjax;
 
 $this->title = $model->idUser1->username . " X ";
 
-if (!$model->idUser2) {
+
+/*if (!$model->idUser2) {
     if (Yii::$app->user->getId() != $model->idUser1->getId()) {
         $model->id_user_2 = Yii::$app->user->getId();
         $model->save();
     }
-}
+}*/
 $this->title .= $model->idUser2?$model->idUser2->username:"...";
 $this->params['breadcrumbs'][] = ['label' => 'Partidas', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 
 // Insiro os estilos CSS criados para a aplicação feita em javascript
 $this->registerCssFile('css/gomoku.css');
+//$this->registerCssFile('js/gomoku.js');
 
 // Carrego o javascript do jogo
 //$this->registerJsFile('js/gomoku.js');
+if (isset($vencedor)){
+Yii::error("vencedor",$vencedor);}
 
-/*$vencedor = 0;
 if (!$vencedor) {
     $this->registerJs('
     setInterval(function() {
         recarregar = document.getElementById("recarregar");
         recarregar.click();
-    }, 1000);
+    }, 10000);
 ');
-}*/
+}
 
 ?>
 
@@ -59,21 +62,42 @@ if (!$vencedor) {
                 ],
                 [
                     'attribute' => 'Vencedor',
-                    'value' => ($model->vencedor == null )? "Vencedor não definido" : $model->vencedor->username,
+                    'value' => ($model->vencedor == null )? "Vencedor não definido" : $model->vencedor0->username,
                 ],
             ],
         ]) ?>
 
         <!-- Link usado pelo Pjax, para carregar o tabuleiro a cada segundo -->
+        <?= Html::a('Recarregar',['partida/view','id'=>$model->id],['id'=>'recarregar','style'=>'display:none']) ?>
         <div class="container">
             <table class='tabuleiro' id="tabela">
                 <?php
+                $caminho= Url::canonical();
+
                 for ($row = 0; $row < 15; $row++){
                     echo "<tr>";
-                    for ($col = 0; $col < 15; $col++){
+                    for ($col = 0; $col < 15; $col++) {
                         echo "<td>";
-                        echo Html::img('@web/img/rosa.jpg', ['width'=> '30px', 'height'=>'30px']);
-                        //echo Html::a('Jogada', ['partida/view']);
+                        if (isset($jogadas)){
+                                if ($jogadas[$row][$col]==$model->id_user_1){?>
+                                    <a href="" onclick=""><img src="img/X.jpg" width="32px" height="32px"></a>
+
+                            <?php
+                                } else if ($jogadas[$row][$col]==$model->id_user_2 && $model->idUser2 != null){?>
+                                    <a href="" onclick=""><img src="img/O.jpg" width="32px" height="32px"></a>
+                            <?php
+                                } else{?>
+                                    <a href="" onclick="clique(<?=$row?>, <?=$col?>, '<?=$caminho?>')"><img src="img/rosa.jpg" width="32px" height="32px"></a>
+                            <?php
+                                }
+                            }else{?>
+                                <a href="" onclick="clique(<?=$row?>, <?=$col?>, '<?=$caminho?>')"><img src="img/rosa.jpg" width="32px" height="32px"></a>
+                        <?php
+                            }
+                        ?>
+
+
+                        <?php
                         echo "</td>";
                     }
                     echo "</tr>";
@@ -94,4 +118,13 @@ if (!$vencedor) {
         </div>
 
     </div>
+
 <?php Pjax::end(); ?>
+
+<script>
+    function clique(linha, coluna, base){
+        window.location.href= base+ '&linha='+linha+'&coluna='+coluna;
+    }
+
+
+</script>
