@@ -20,10 +20,34 @@ $this->title = 'Gomoku Game';
             <p class="lead">Jogadores aguardando desafiantes</p>
 
         <?php
-            $partidas = Partida::find()->andWhere("id_user_2 is NULL")->all();
-            foreach ($partidas as $partida){
-                echo Html::a($partida->idUser1->username, ['partida/view', 'id'=>$partida->id]);
+            $partidas = Partida::find()
+                ->where('id_user_1 IS NOT NULL')
+                ->andWhere('id_user_1 != ' . Yii::$app->user->id)
+                ->andWhere("id_user_2 is NULL")
+                ->all();
+            foreach ($partidas as $partida) {
+                echo Html::a($partida->idUser1->username,['partida/view','id'=>$partida->id],['class'=>'btn btn-lg btn-success']);
+            }
 
+        ?>
+        <p class="lead">Partidas Não Finalizadas</p>
+
+        <?php
+            $partidas = Partida::find()
+                ->where('vencedor IS NULL')
+                ->AndWhere('id_user_1 = ' . Yii::$app->user->id . ' OR id_user_2 = ' . Yii::$app->user->id)
+                ->all();
+
+            foreach ($partidas as $partida) {
+                if ($partida->id_user_1 == Yii::$app->user->id) {
+                    if($partida->idUser2) {
+                        echo Html::a($partida->idUser2->username, ['partida/view', 'id' => $partida->id], ['class' => 'btn btn-lg btn-success']) . "<br><br>";
+                    }
+                } else {
+                    if ($partida->idUser1) {
+                        echo Html::a($partida->idUser1->username, ['partida/view', 'id' => $partida->id], ['class' => 'btn btn-lg btn-success']) . "<br><br>";
+                    }
+                }
             }
         }
         ?>

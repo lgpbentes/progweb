@@ -55,6 +55,7 @@ class PartidaController extends Controller
      */
     public function actionView($id, $linha=NULL, $coluna=NULL)
     {
+        $jogador_da_vez = Yii::$app->user->id;
         // Carregando o modelo de Partidas
         $model = $this->findModel($id);
 
@@ -102,17 +103,26 @@ class PartidaController extends Controller
             $ultimo_jogador = $jogada->id_user;
         }
         $vencedor = null;
+
         if($jogada_model->linha!=NULL && $jogada_model->coluna!=NULL){
             $vencedor = $this->verificaVencedor($jogada_model->linha, $jogada_model->coluna,$jogadas_array,$ultimo_jogador);
         }
-        if ($vencedor) {
+        if ($vencedor != null) {
             $model->vencedor = $vencedor;
             $model->save();
+        }
+
+        if (isset($ultimo_jogador)) {
+            if ($ultimo_jogador == $model->id_user_1)
+                $jogador_da_vez = $model->id_user_2;
+            else
+                $jogador_da_vez = $model->id_user_1;
         }
 
         return $this->render('view', [
             'model' => $this->findModel($id),
             'jogadas' => $jogadas_array,
+            'jogador_da_vez' => $jogador_da_vez,
             'vencedor' => $vencedor
         ]);
 
@@ -122,26 +132,21 @@ class PartidaController extends Controller
 
     public function verificaVencedor($posX, $posY, $tabuleiro, $ultimo_jogador) {
         //verifica na horizontal
-        Yii::error('posX', $posX);
-        Yii::error('posY', $posY);
-
         $iguais = 0;
         for($y = 0; $y < 15; $y++){
 
-                if ($tabuleiro[$posX][$y] == $ultimo_jogador) {
-                    $iguais = $iguais + 1;
-                } else {
-                    $iguais = 0;
-                }
-                Yii::error('iguais', $iguais);
-                if ($iguais == 5) {
-                    return User::findOne($ultimo_jogador);
-                }
-
+            if ($tabuleiro[$posX][$y] == $ultimo_jogador) {
+                $iguais = $iguais + 1;
+            } else {
+                $iguais = 0;
+            }
+            if ($iguais == 5) {
+                return $ultimo_jogador;
+            }
         }
 
         //verifica na vertical
-        /*$iguais = 0;
+        $iguais = 0;
         for($x = 0; $x < 15; $x++){
             if($tabuleiro[$x][$posY] == $ultimo_jogador){
                 $iguais = $iguais+1;
@@ -150,9 +155,64 @@ class PartidaController extends Controller
             }
 
             if($iguais==5){
-                return true;
+                return $ultimo_jogador;
             }
-        }*/
+        }
+
+        $dX = $posX;
+        $dY = $posY;
+        //verifica na diagonal (left-to-right)
+        if ($dX > $dY){
+            $dX = $dX - $dY;
+            $dY = 0;
+        }else{
+            $dY = $dY - $dX;
+            $dX = 0;
+        }
+
+        $iguais = 0;
+        while($dX < 15 && $dY < 15){
+            if ($tabuleiro[$dX][$dY] == $ultimo_jogador){
+                $iguais++;
+            } else{
+                $iguais = 0;
+            }
+
+            if($iguais==5){
+                return $ultimo_jogador;
+            }
+            //console.log(posX+", "+posY);
+            $dX++;
+            $dY++;
+        }
+
+        // vertical right-to-left
+        $dX = $posX;
+        $dY = $posY;
+
+        // achando a posicao inicial
+        while(($dX >= 1 && $dX <14) && ($dY >= 1 && $dY < 14)){
+
+            $dX--;
+            $dY++;
+        }
+
+        //contando
+        $iguais = 0;
+        while($dX < 15 && $dY >=0){
+            if ($tabuleiro[$dX][$dY] == $ultimo_jogador){
+                $iguais++;
+            }else{
+                $iguais=0;
+            }
+
+            if($iguais==5){
+                return $ultimo_jogador;
+            }
+            $dX++;
+            $dY--;
+        }
+
 
         return null;
     }
@@ -164,13 +224,16 @@ class PartidaController extends Controller
      */
     public function actionCreate()
     {
-        //$model = Partida::find()->where(['id_user_1'=>Yii::$app->user->id])->andWhere('vencedor IS NULL')->one();
+        $model = Partida::find()
+            ->where(['id_user_1'=>Yii::$app->user->id])
+            ->andWhere('vencedor IS NULL')
+            ->one();
 
-
+        if(!$model) {
             $model = new Partida();
             $model->id_user_1 = Yii::$app->user->id;
             $model->save();
-
+        }
 
         return $this->redirect(['partida/view', 'id' => $model->id]);
     }

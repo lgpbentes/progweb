@@ -27,15 +27,13 @@ $this->registerCssFile('css/gomoku.css');
 
 // Carrego o javascript do jogo
 //$this->registerJsFile('js/gomoku.js');
-if (isset($vencedor)){
-Yii::error("vencedor",$vencedor);}
 
-if (!$vencedor) {
+if (!$model->vencedor) {
     $this->registerJs('
     setInterval(function() {
         recarregar = document.getElementById("recarregar");
         recarregar.click();
-    }, 10000);
+    }, 1000);
 ');
 }
 
@@ -52,14 +50,17 @@ if (!$vencedor) {
             'attributes' => [
                 //'id_user_1',
                 [
-                    'attribute' => 'Jogador 1',
+                    'label' => "<img src ='img/X.jpg' width='32px' height='32px' >  Jogador 1",
                     'value' => $model->idUser1->username,
+                    'format' => 'raw'
                 ],
 
                 [
-                    'attribute' => 'Jogador 2',
+                    'label' => "<img src ='img/O.jpg' width='32px' height='32px' >  Jogador 1",
                     'value' => ($model->idUser2 == null)?"Aguardando...":$model->idUser2->username,
+                    'format' => 'raw'
                 ],
+
                 [
                     'attribute' => 'Vencedor',
                     'value' => ($model->vencedor == null )? "Vencedor não definido" : $model->vencedor0->username,
@@ -73,7 +74,7 @@ if (!$vencedor) {
             <table class='tabuleiro' id="tabela">
                 <?php
                 $caminho= Url::canonical();
-
+                $evento = "";
                 for ($row = 0; $row < 15; $row++){
                     echo "<tr>";
                     for ($col = 0; $col < 15; $col++) {
@@ -86,12 +87,27 @@ if (!$vencedor) {
                                 } else if ($jogadas[$row][$col]==$model->id_user_2 && $model->idUser2 != null){?>
                                     <a href="" onclick=""><img src="img/O.jpg" width="32px" height="32px"></a>
                             <?php
-                                } else{?>
-                                    <a href="" onclick="clique(<?=$row?>, <?=$col?>, '<?=$caminho?>')"><img src="img/rosa.jpg" width="32px" height="32px"></a>
+                                } else{
+                                    if (isset($jogador_da_vez)){
+                                        if ($jogador_da_vez == Yii::$app->user->getId() && !$vencedor) {
+                                            $evento = "clique($row, $col, '$caminho')";
+                                        }
+                                    }
+
+                                    ?>
+
+                                    <a href="" onclick="<?=$evento?>"><img src="img/rosa.jpg" width="32px" height="32px"></a>
                             <?php
                                 }
-                            }else{?>
-                                <a href="" onclick="clique(<?=$row?>, <?=$col?>, '<?=$caminho?>')"><img src="img/rosa.jpg" width="32px" height="32px"></a>
+                            }else{
+                                if (isset($jogador_da_vez)){
+                                    if ($jogador_da_vez == Yii::$app->user->getId() && !$vencedor) {
+                                        $evento = "clique($row, $col, '$caminho')";
+                                    }
+                                }
+                            ?>
+
+                                <a href="" onclick="<?=$evento?>"><img src="img/rosa.jpg" width="32px" height="32px"></a>
                         <?php
                             }
                         ?>
